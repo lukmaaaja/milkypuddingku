@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MilkyPudding - Puding Susu Botol Segar & Lembut</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Quicksand"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+            },
+            creamy: '#FFFDF9',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #fafaf9; }
+    ::-webkit-scrollbar-thumb { background: #fed7aa; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #fb923c; }
+    .glassmorphism {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="bg-stone-50 font-sans text-stone-800 antialiased selection:bg-brand-200 min-h-screen flex flex-col justify-between">
+
+  <div class="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 text-white text-xs sm:text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-3 shadow-inner z-50">
+    <span class="bg-white/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider text-[11px] animate-pulse">⚡ Flash Sale Hari Ini</span>
+    <span>Diskon Spesial 10% dengan Kupon: <span class="underline decoration-amber-200 font-black">MILKYHEMAT</span></span>
+    <span class="hidden md:inline bg-black/20 px-2.5 py-0.5 rounded text-xs font-mono" id="flashTimer">03:45:12</span>
+  </div>
+
+  <header class="sticky top-0 z-40 w-full glassmorphism border-b border-stone-200/80 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-400 flex items-center justify-center shadow-md shadow-orange-300/40 group-hover:scale-105 transition-transform duration-200">
+          <i data-lucide="milk" class="w-6 h-6 text-white stroke-[2.2]"></i>
+        </div>
+        <div>
+          <span class="font-display font-bold text-xl sm:text-2xl text-stone-900 tracking-tight flex items-center gap-1">
+            Milky<span class="text-orange-500">Pudding</span>
+          </span>
+          <span class="text-[10px] sm:text-xs block text-stone-400 -mt-1 font-semibold tracking-wider uppercase">Silky Bottle Pudding</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-stone-600 mr-2">
+          <a href="#katalog" class="hover:text-orange-600 transition">Katalog Menu</a>
+          <a href="#bundles" class="hover:text-orange-600 transition">Paket Hemat</a>
+          <a href="#minigame" class="hover:text-orange-600 transition text-orange-600 font-bold flex items-center gap-1"><i data-lucide="sparkles" class="w-4 h-4"></i> Spin Hadiah</a>
+          <a href="#faq" class="hover:text-orange-600 transition">FAQ</a>
+          <a href="#walloffame" class="hover:text-orange-600 transition">Testimoni</a>
+        </nav>
+
+        <div id="memberTierBadge" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold shadow-sm">
+          <i data-lucide="crown" class="w-4 h-4 text-amber-600"></i>
+          <span id="memberTierName">Bronze Member</span> (<span id="memberPointsCount">0</span> Poin)
+        </div>
+
+        <button onclick="openAdminAuthModal()" title="Panel Admin Toko" class="p-2.5 text-stone-500 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition flex items-center gap-1.5 text-xs font-bold border border-stone-200/80">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-orange-500"></i>
+          <span class="hidden sm:inline">Admin</span>
+        </button>
+
+        <button onclick="toggleCartModal(true)" class="relative flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold px-4 py-2.5 rounded-2xl shadow-md shadow-orange-500/25 hover:opacity-95 active:scale-95 transition-all">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          <span class="hidden sm:inline text-sm">Keranjang</span>
+          <span id="navCartCount" class="w-5 h-5 bg-white text-orange-600 rounded-full text-xs font-bold flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <section class="relative overflow-hidden bg-gradient-to-b from-orange-50/70 via-creamy to-stone-50 pt-8 pb-14 sm:py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100/90 text-orange-700 text-xs sm:text-sm font-semibold border border-orange-200 shadow-sm">
+              <span class="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
+              Puding Susu Botol Segar & Lembut di Mulut
+            </div>
+            
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 tracking-tight leading-tight">
+              Nikmati Kelezatan Silky Pudding, <span class="bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent">Langsung Dari Botol!</span>
+            </h1>
+
+            <p class="text-stone-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              Dibuat dari 100% susu murni berkualitas tanpa pengawet buatan. Ultra-lembut, lumer, dan higienis dalam botol 200ml. Bebas berikan ulasan & nilai rasa favoritmu!
+            </p>
+
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+              <a href="#katalog" class="px-7 py-3.5 rounded-2xl bg-stone-900 text-white font-bold hover:bg-stone-800 shadow-lg shadow-stone-800/10 active:scale-95 transition-all flex items-center gap-2">
+                <span>Pilih Varian Menu</span>
+                <i data-lucide="arrow-down" class="w-4 h-4"></i>
+              </a>
+              <a href="#bundles" class="px-7 py-3.5 rounded-2xl bg-orange-100 text-orange-700 font-bold hover:bg-orange-200 shadow-sm transition-all flex items-center gap-2">
+                <i data-lucide="package" class="w-4 h-4"></i>
+                <span>Lihat Paket Bundle</span>
+              </a>
+            </div>
+
+            <div class="bg-white/90 p-4 rounded-2xl border border-orange-200 shadow-sm text-xs text-stone-700 space-y-1.5 max-w-lg">
+              <div class="flex items-center gap-2 font-bold text-orange-800">
+                <i data-lucide="snowflake" class="w-4 h-4 text-sky-500"></i>
+                <span>Saran Penyimpanan & Penyajian:</span>
+              </div>
+              <p class="text-stone-600">Simpan selalu di dalam kulkas (suhu 2–4°C). Nikmati selagi dingin agar sensasi lembut dan lumernya lebih terasa nikmat!</p>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 relative flex justify-center">
+            <div class="relative w-72 sm:w-80 lg:w-96 aspect-square rounded-3xl bg-gradient-to-tr from-orange-200 via-amber-100 to-rose-100 p-3 shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500">
+              <img 
+                src="https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=800&q=80" 
+                alt="Milky Pudding Bottles" 
+                class="w-full h-full object-cover rounded-2xl shadow-inner"
+                onerror="this.src='https://placehold.co/600x600/fef3c7/ea580c?text=MilkyPudding'"
+              />
+              <div class="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3">
+                <span class="text-2xl">🍮</span>
+                <div>
+                  <p class="text-xs text-stone-400 font-semibold uppercase">Rasa Terfavorit</p>
+                  <p class="text-sm font-bold text-stone-800">Cokelat Belgia & Matcha</p>
+                </div>
+              </div>
+              <div class="absolute -top-3 -right-3 bg-orange-500 text-white text-xs font-black px-3.5 py-1.5 rounded-full shadow-lg">
+                Fresh Daily!
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="bundles" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div class="text-center max-w-xl mx-auto mb-10 space-y-2">
+        <span class="text-xs uppercase tracking-wider font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full">Paket Spesial Hemat</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-900">Rekomendasi Paket Bundle</h2>
+        <p class="text-sm text-stone-500">Lebih hemat dan praktis untuk dinikmati bersama keluarga atau acara spesial.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:border-orange-300 transition">
+          <div>
+            <span class="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full">Paket Trio Santai</span>
+            <h3 class="font-extrabold text-xl text-stone-900 mt-3">3 Botol Mix Rasa</h3>
+            <p class="text-xs text-stone-500 mt-1">Pilih 3 varian botol favoritmu (Cokelat, Strawberry, Matcha) dengan harga lebih terjangkau.</p>
+            <div class="mt-4 text-xl font-black text-orange-600">Rp 42.000 <span class="text-xs text-stone-400 font-normal line-through">Rp 45.000</span></div>
+          </div>
+          <button onclick="addBundleToCart('Paket Trio Santai (3 Botol)', 42000)" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl text-xs shadow transition">
+            Pesan Paket Trio
+          </button>
+        </div>
+
+        <div class="bg-gradient-to-tr from-orange-500 to-amber-500 rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between space-y-4 relative overflow-hidden">
+          <span class="absolute top-4 right-4 bg-white/20 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Paling Laris</span>
+          <div>
+            <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">Paket Family Box</span>
+            <h3 class="font-extrabold text-xl text-white mt-3">6 Botol Puding Keluarga</h3>
+            <p class="text-xs text-orange-100 mt-1">Isi 6 botol lengkap dengan tambahan Vla Ekstra Cokelat & Vanilla gratis.</p>
+            <div class="mt-4 text-xl font-black text-white">Rp 80.000 <span class="text-xs text-orange-200 font-normal line-through">Rp 90.000</span></div>
+          </div>
+          <button onclick="addBundleToCart('Paket Family Box (6 Botol)', 80000)" class="w-full py-3 bg-white text-orange-600 font-bold rounded-2xl text-xs shadow transition">
+            Pesan Paket Family
+          </button>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:border-orange-300 transition">
+          <div>
+            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Paket Party / Arisan</span>
+            <h3 class="font-extrabold text-xl text-stone-900 mt-3">10 Botol Puding Pesta</h3>
+            <p class="text-xs text-stone-500 mt-1">Cocok untuk acara ulang tahun, arisan, atau kumpul keluarga besar. Free Ongkir Zona 1 & 2!</p>
+            <div class="mt-4 text-xl font-black text-orange-600">Rp 130.000 <span class="text-xs text-stone-400 font-normal line-through">Rp 150.000</span></div>
+          </div>
+          <button onclick="addBundleToCart('Paket Party (10 Botol)', 130000)" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl text-xs shadow transition">
+            Pesan Paket Party
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="minigame" class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div class="bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 rounded-3xl p-6 sm:p-10 text-white shadow-xl text-center space-y-4">
+        <span class="bg-white/25 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1">
+          <i data-lucide="gift" class="w-4 h-4"></i> Mini Game Spesial Pelanggan
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold">Spin Keberuntungan MilkyPudding</h2>
+        <p class="text-sm text-orange-100 max-w-lg mx-auto">Putar roda keberuntungan untuk mendapatkan voucher potongan harga tambahan secara acak!</p>
+        
+        <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 max-w-md mx-auto space-y-4">
+          <div id="spinResultBox" class="text-xl sm:text-2xl font-black text-amber-200 h-16 flex items-center justify-center bg-black/20 rounded-xl px-4 border border-white/10">
+            Klik Tombol Putar di Bawah!
+          </div>
+          <button onclick="spinWheel()" id="spinButton" class="w-full py-3.5 bg-white text-orange-600 font-bold text-sm rounded-xl shadow-lg hover:bg-orange-50 active:scale-95 transition-all">
+            🎲 Putar Roda Sekarang
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="katalog" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full">Katalog Menu Botol</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-900 mt-2">Pilihan Rasa MilkyPudding</h2>
+          <p class="text-sm text-stone-500 mt-1">Geser galeri 3 foto di tiap menu dan berikan ulasan bintang dengan foto Anda.</p>
+        </div>
+        
+        <div class="relative w-full sm:w-72">
+          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="searchProductInput" 
+            oninput="filterProducts()" 
+            placeholder="Cari rasa pudding..." 
+            class="w-full bg-white pl-9 pr-4 py-2.5 text-sm border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all shadow-sm"
+          />
+        </div>
+      </div>
+
+      <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-12 border-t border-stone-200/80">
+      <div class="text-center max-w-xl mx-auto mb-10 space-y-2">
+        <span class="text-xs uppercase tracking-wider font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full">Pusat Bantuan</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-900">Pertanyaan Sering Diajukan (FAQ)</h2>
+        <p class="text-sm text-stone-500">Temukan informasi seputar ketahanan puding, pengiriman, dan cara pemesanan.</p>
+      </div>
+
+      <div class="space-y-3">
+        <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+          <h3 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> Berapa lama puding botol tahan di dalam kulkas?
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 mt-2 pl-7">
+            MilkyPudding tahan hingga 3–4 hari di dalam kulkas (suhu 2–4°C) karena dibuat tanpa bahan pengawet buatan. Disarankan untuk segera dinikmati dalam keadaan dingin agar rasa susunya lebih nikmat.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+          <h3 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> Apakah bisa dikirim ke luar kota atau pakai kurir instan?
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 mt-2 pl-7">
+            Untuk menjaga kualitas tekstur agar tetap lembut dan tidak rusak, saat ini pengiriman melayani area dalam kota menggunakan kurir instan/antar atau opsi Ambil di Tempat (Self-Pickup).
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm">
+          <h3 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> Bagaimana cara memberikan ulasan atau bintang pada produk?
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 mt-2 pl-7">
+            Setiap pelanggan umum dapat langsung menekan tombol tab <b>"Ulasan"</b> pada kartu menu apa saja, lalu mengeklik tombol <b>"Tulis Ulasan & Foto"</b> untuk memberikan penilaian 1–5 bintang beserta foto bukti ulasan Anda secara gratis!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="walloffame" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-stone-200/80">
+      <div class="text-center max-w-xl mx-auto mb-10 space-y-2">
+        <span class="text-xs uppercase tracking-wider font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full">Testimoni Pelanggan</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-900">Wall of Fame MilkyPudding</h2>
+        <p class="text-sm text-stone-500">Momen seru pelanggan setia saat menikmati puding botol bersama keluarga & teman.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-200 relative group">
+          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=500&q=80" alt="Testimoni" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white text-xs font-bold">
+            "Anak-anak paling suka rasa cokelatnya!" - Kak Rina
+          </div>
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-200 relative group">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80" alt="Testimoni" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white text-xs font-bold">
+            "Segar banget pas dingin-dingin." - Kak Budi
+          </div>
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-200 relative group">
+          <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=500&q=80" alt="Testimoni" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white text-xs font-bold">
+            "Taro nya wangi dan lumer di mulut." - Kak Siska
+          </div>
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm border border-stone-200 relative group">
+          <img src="https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=500&q=80" alt="Testimoni" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white text-xs font-bold">
+            "Langganan buat acara keluarga." - Kak Maya
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-stone-200/80">
+      <div class="bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl p-8 sm:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="space-y-4 max-w-2xl">
+          <span class="bg-white/25 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Tentang MilkyPudding</span>
+          <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Puding Susu Botol Premium No. 1 Pilihan Keluarga</h2>
+          <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
+            Diproduksi setiap hari dengan bahan-bahan pilihan berkualitas tinggi. Setiap botol 200ml dirancang higienis agar mudah dinikmati kapan saja dan di mana saja.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl text-xs font-bold">
+              <i data-lucide="check-circle" class="w-4 h-4 text-amber-200"></i>
+              <span>Halal & Higienis</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl text-xs font-bold">
+              <i data-lucide="check-circle" class="w-4 h-4 text-amber-200"></i>
+              <span>Bisa Dikirim / COD</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white/15 backdrop-blur-md p-6 rounded-3xl border border-white/20 text-center min-w-[260px]">
+          <p class="text-xs uppercase tracking-wider text-orange-100 font-semibold mb-1">WhatsApp Pemesanan</p>
+          <p class="text-xl sm:text-2xl font-black mb-3">085704843430</p>
+          <a href="https://wa.me/6285704843430" target="_blank" class="w-full py-3 px-4 bg-white text-orange-600 font-bold rounded-2xl shadow hover:bg-orange-50 transition block text-xs">
+            Chat Admin Sekarang
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white border-t border-stone-200 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-xl bg-orange-500 flex items-center justify-center text-white">
+          <i data-lucide="milk" class="w-4 h-4"></i>
+        </div>
+        <p class="text-sm font-bold text-stone-800">MilkyPudding &bull; Puding Susu Botol</p>
+      </div>
+      <p class="text-xs text-stone-500">
+        Admin WhatsApp: <span class="text-orange-600 font-semibold">085704843430</span>
+      </p>
+      <p class="text-xs text-stone-400">
+        &copy; <span id="currentYear"></span> MilkyPudding. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <div id="cartModal" class="fixed inset-0 z-50 overflow-hidden pointer-events-none opacity-0 transition-opacity duration-300">
+    <div id="cartBackdrop" onclick="toggleCartModal(false)" class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity duration-300"></div>
+
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div id="cartContent" class="w-screen max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 pointer-events-auto">
+        
+        <div class="p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-stone-900 text-base">Keranjang Belanja</h3>
+              <p class="text-xs text-stone-400"><span id="cartTotalItemsCount">0</span> item dipilih</p>
+            </div>
+          </div>
+          <button onclick="toggleCartModal(false)" class="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-200/50 rounded-xl transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <div id="checkoutSection" class="border-t border-stone-100 p-5 bg-stone-50/70 space-y-4 max-h-[65vh] overflow-y-auto">
+          
+          <div class="bg-amber-50/80 p-3 rounded-2xl border border-amber-200/60 space-y-2">
+            <label class="block text-xs font-bold text-amber-900 flex items-center gap-1.5">
+              <i data-lucide="plus-circle" class="w-4 h-4 text-orange-500"></i> Tambahan Ekstra Opsional
+            </label>
+            <div class="space-y-1.5 text-xs text-stone-700">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="upsellVla" onchange="updateCartUI()" class="rounded text-orange-500 focus:ring-orange-400">
+                <span>Tambah Vla Ekstra Cokelat/Vanilla (+Rp3.000)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="upsellCutlery" onchange="updateCartUI()" class="rounded text-orange-500 focus:ring-orange-400">
+                <span>Extra Sendok & Tissue Higienis (Gratis)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="bg-orange-50/80 p-3 rounded-2xl border border-orange-200/60 space-y-2">
+            <label class="block text-xs font-bold text-orange-800 flex items-center gap-1.5">
+              <i data-lucide="repeat" class="w-4 h-4 text-orange-500"></i> Paket Berlangganan (Opsional)
+            </label>
+            <select id="subscriptionOption" onchange="updateCartUI()" class="w-full text-xs px-3 py-2 bg-white border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 font-semibold">
+              <option value="none">Beli Sekali Saja (Non-Subscription)</option>
+              <option value="weekly2x">Paket Rutin 2x Seminggu (Diskon Tambahan 5%)</option>
+            </select>
+          </div>
+
+          <div class="bg-orange-50/80 p-3 rounded-2xl border border-orange-200/60 space-y-2">
+            <label class="block text-xs font-bold text-orange-800">Punya Kode Voucher / Promo?</label>
+            <div class="flex gap-2">
+              <input type="text" id="voucherInput" placeholder="Cth: MILKYHEMAT" class="flex-1 text-xs px-3 py-2 bg-white border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 uppercase font-bold">
+              <button onclick="applyVoucher()" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-sm transition">
+                Gunakan
+              </button>
+            </div>
+            <div id="voucherStatusText" class="text-[11px] font-semibold text-emerald-600 hidden"></div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-stone-700">Area / Kecamatan Pengiriman</label>
+            <select id="shippingAreaSelect" onchange="updateCartUI()" class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none font-semibold">
+              <option value="0">Wilayah Zona 1 (Gratis Ongkir)</option>
+              <option value="5000">Zona 2 (+Rp 5.000)</option>
+              <option value="10000">Zona 3 Luar Kota (+Rp 10.000)</option>
+              <option value="0">Ambil di Tempat (Self-Pickup - Rp 0)</option>
+            </select>
+          </div>
+
+          <div class="space-y-1.5 pb-2 border-b border-stone-200/80 text-xs">
+            <div class="flex justify-between text-stone-500">
+              <span>Subtotal Botol</span>
+              <span id="subTotalPriceText" class="font-semibold text-stone-700">Rp 0</span>
+            </div>
+            <div id="upsellRow" class="flex justify-between text-stone-500 hidden">
+              <span>Tambahan Topping</span>
+              <span id="upsellPriceText">Rp 0</span>
+            </div>
+            <div class="flex justify-between text-stone-500">
+              <span>Ongkos Kirim / Area</span>
+              <span id="shippingPriceText" class="font-semibold text-stone-700">Rp 0</span>
+            </div>
+            <div id="discountRow" class="flex justify-between text-emerald-600 hidden">
+              <span>Diskon (<span id="voucherCodeLabel"></span>)</span>
+              <span id="discountPriceText">- Rp 0</span>
+            </div>
+            <div class="flex justify-between text-base font-bold text-stone-900 pt-1">
+              <span>Total Pembayaran</span>
+              <span id="cartTotalPrice" class="text-orange-600 text-lg">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-stone-500">Informasi Pemesan</h4>
+            
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Nama Pemesan <span class="text-red-500">*</span></label>
+              <input type="text" id="custName" placeholder="Contoh: Kak Dinda" class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Nomor WhatsApp Anda <span class="text-red-500">*</span></label>
+              <input type="tel" id="custPhone" placeholder="Contoh: 08123456789" class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">Slot Waktu Kirim</label>
+                <select id="custTimeSlot" class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                  <option value="Sesi 1 (10.00 - 12.00)">Sesi 1 (10.00 - 12.00)</option>
+                  <option value="Sesi 2 (14.00 - 16.00)">Sesi 2 (14.00 - 16.00)</option>
+                  <option value="Sesi 3 (17.00 - 19.00)">Sesi 3 (17.00 - 19.00)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 mb-1">Metode Pembayaran</label>
+                <select id="custPaymentMethod" class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                  <option value="Transfer Bank (BCA / Mandiri)">Transfer Bank</option>
+                  <option value="QRIS (All Payment)">QRIS (All Payment)</option>
+                  <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bg-stone-50 p-3 rounded-2xl border border-stone-200 space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-xs text-stone-800">
+                <input type="checkbox" id="giftBoxToggle" onchange="toggleGiftBoxForm()" class="rounded text-orange-500 focus:ring-orange-400">
+                <span>🎁 Kirim sebagai Hadiah / Hampers</span>
+              </label>
+              <div id="giftBoxFields" class="space-y-2 pt-1 hidden">
+                <input type="text" id="giftSender" placeholder="Nama Pengirim Kado" class="w-full text-xs px-3 py-1.5 bg-white border border-stone-200 rounded-xl">
+                <input type="text" id="giftRecipient" placeholder="Nama Penerima Kado" class="w-full text-xs px-3 py-1.5 bg-white border border-stone-200 rounded-xl">
+                <textarea id="giftMessage" rows="2" placeholder="Tulis ucapan selamat/pesan kustom di sini..." class="w-full text-xs px-3 py-1.5 bg-white border border-stone-200 rounded-xl"></textarea>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Alamat Lengkap / Catatan Khusus</label>
+              <textarea id="custNotes" rows="2" placeholder="Tulis alamat kirim atau catatan (misal: dinginkan dulu di kulkas ya Kak)..." class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
+            </div>
+          </div>
+
+          <button 
+            type="button" 
+            onclick="sendOrderToWhatsApp()" 
+            class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2.5 transition-all">
+            <i data-lucide="message-circle" class="w-5 h-5 fill-current"></i>
+            <span>Pesan via WhatsApp (085704843430)</span>
+          </button>
+          <p class="text-[11px] text-center text-stone-400">Pesanan otomatis terformat rapi dan dikirim ke WhatsApp admin.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="adminAuthModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-stone-900 text-lg flex items-center gap-2">
+          <i data-lucide="shield-alert" class="w-5 h-5 text-orange-500"></i>
+          Otorisasi Admin
+        </h3>
+        <button onclick="closeAdminAuthModal()" class="text-stone-400 hover:text-stone-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <p class="text-xs text-stone-500">Masukkan password admin (<span class="font-bold text-stone-700">admin123</span>).</p>
+      <div>
+        <label class="block text-xs font-semibold text-stone-700 mb-1">Password Admin</label>
+        <input type="password" id="adminPasswordInput" placeholder="Password..." class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none"/>
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeAdminAuthModal()" class="flex-1 py-2.5 rounded-xl border border-stone-200 text-stone-600 font-semibold text-xs hover:bg-stone-50">Batal</button>
+        <button onclick="verifyAdminPassword()" class="flex-1 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs shadow-md">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-3xl shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+        <div>
+          <h3 class="font-bold text-stone-900 text-xl flex items-center gap-2">
+            <i data-lucide="settings-2" class="w-6 h-6 text-orange-500"></i>
+            Panel Admin MilkyPudding
+          </h3>
+          <p class="text-xs text-stone-400">Kelola nama, harga, deskripsi, dan galeri foto menu secara real-time.</p>
+        </div>
+        <button onclick="closeAdminDashboardModal()" class="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-xl">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="flex justify-between items-center">
+        <h4 class="font-bold text-stone-800 text-sm">Daftar Menu Produk (<span id="adminProductCount">0</span>)</h4>
+        <button onclick="openProductFormModal('add')" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow flex items-center gap-1.5 transition">
+          <i data-lucide="plus" class="w-4 h-4"></i> Tambah Menu Baru
+        </button>
+      </div>
+      <div id="adminProductListContainer" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <div id="productFormModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 id="productFormTitle" class="font-bold text-stone-900 text-lg">Kelola Menu</h3>
+        <button onclick="closeProductFormModal()" class="text-stone-400 hover:text-stone-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="productFormElement" onsubmit="saveProductForm(event)" class="space-y-3.5">
+        <input type="hidden" id="editProductId">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Nama Menu</label>
+          <input type="text" id="formProdName" required class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Kategori</label>
+            <input type="text" id="formProdCategory" required class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Harga (Rp)</label>
+            <input type="number" id="formProdPrice" required class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Badge Label (Cth: Terlaris / Menu Baru / Stok Terbatas)</label>
+          <input type="text" id="formProdBadge" placeholder="Terlaris / Best Seller" class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Deskripsi</label>
+          <textarea id="formProdDesc" required rows="2" class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
+        </div>
+        <div class="space-y-2 pt-2 border-t border-stone-100">
+          <label class="block text-xs font-bold text-stone-800">3 URL Foto Slider Produk</label>
+          <input type="url" id="formProdImg1" required placeholder="Foto Utama (URL)" class="w-full text-xs px-3 py-2 border border-stone-200 rounded-xl">
+          <input type="url" id="formProdImg2" placeholder="Foto Galeri 2 (URL)" class="w-full text-xs px-3 py-2 border border-stone-200 rounded-xl">
+          <input type="url" id="formProdImg3" placeholder="Foto Galeri 3 (URL)" class="w-full text-xs px-3 py-2 border border-stone-200 rounded-xl">
+        </div>
+        <div class="flex gap-2 pt-3">
+          <button type="button" onclick="closeProductFormModal()" class="flex-1 py-2.5 rounded-xl border border-stone-200 text-stone-600 font-semibold text-xs">Batal</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-orange-500 text-white font-semibold text-xs">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-stone-900 text-lg flex items-center gap-2">
+          <i data-lucide="star" class="w-5 h-5 text-amber-500 fill-amber-500"></i> Beri Ulasan & Penilaian Bintang
+        </h3>
+        <button onclick="closeReviewModal()" class="text-stone-400 hover:text-stone-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="reviewForm" onsubmit="submitProductReview(event)" class="space-y-3.5">
+        <input type="hidden" id="reviewProductId">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Nama Anda <span class="text-red-500">*</span></label>
+          <input type="text" id="reviewAuthor" required placeholder="Contoh: Kak Siska" class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Pilih Penilaian Bintang (1 - 5 Bintang) <span class="text-red-500">*</span></label>
+          <div class="flex items-center gap-2 py-2 px-3 bg-amber-50/80 rounded-2xl border border-amber-200">
+            <div id="starContainer" class="flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="star" class="w-7 h-7 text-amber-400 fill-amber-400 star-item transition hover:scale-110" onclick="setRating(1)" data-val="1"></i>
+              <i data-lucide="star" class="w-7 h-7 text-amber-400 fill-amber-400 star-item transition hover:scale-110" onclick="setRating(2)" data-val="2"></i>
+              <i data-lucide="star" class="w-7 h-7 text-amber-400 fill-amber-400 star-item transition hover:scale-110" onclick="setRating(3)" data-val="3"></i>
+              <i data-lucide="star" class="w-7 h-7 text-amber-400 fill-amber-400 star-item transition hover:scale-110" onclick="setRating(4)" data-val="4"></i>
+              <i data-lucide="star" class="w-7 h-7 text-amber-400 fill-amber-400 star-item transition hover:scale-110" onclick="setRating(5)" data-val="5"></i>
+            </div>
+            <span id="ratingTextLabel" class="text-xs font-bold text-amber-900 ml-auto">5 Bintang (Sangat Puas)</span>
+          </div>
+          <input type="hidden" id="reviewRatingInput" value="5">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Komentar & Ulasan <span class="text-red-500">*</span></label>
+          <textarea id="reviewComment" required rows="3" placeholder="Ceritakan bagaimana rasa dan kelembutan puding ini..." class="w-full text-sm px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Unggah Tautan Foto Ulasan (Opsional)</label>
+          <input type="url" id="reviewPhotoUrl" placeholder="https://images.unsplash.com/... (URL Foto Anda)" class="w-full text-xs px-3.5 py-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+          <p class="text-[10px] text-stone-400 mt-1">Masukkan tautan foto (URL) bukti ulasan Anda.</p>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeReviewModal()" class="flex-1 py-2.5 rounded-xl border border-stone-200 text-xs font-semibold">Batal</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold shadow">Kirim Ulasan Publik</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastMessage" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3 px-4 py-3 bg-stone-900 text-white rounded-2xl shadow-xl text-sm font-medium">
+    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+    <span id="toastText">Item berhasil ditambahkan</span>
+  </div>
+
+  <script>
+    let ADMIN_PHONE = "085704843430";
+
+    const initialProducts = [
+      {
+        id: 1,
+        name: "MilkyPudding Cokelat Belgia",
+        category: "Classic Rich",
+        desc: "Puding susu cokelat pekat Belgia dengan saus cokelat lumer lembut.",
+        price: 15000,
+        badge: "Terlaris / Best Seller",
+        badgeColor: "bg-amber-500",
+        images: [
+          "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80"
+        ]
+      },
+      {
+        id: 2,
+        name: "MilkyPudding Strawberry Fresh",
+        category: "Fruity Silky",
+        desc: "Kombinasi susu murni & pure strawberry asli yang manis segar.",
+        price: 15000,
+        badge: "Menu Baru",
+        badgeColor: "bg-rose-500",
+        images: [
+          "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80"
+        ]
+      },
+      {
+        id: 3,
+        name: "MilkyPudding Matcha Green Tea",
+        category: "Signature Japanese",
+        desc: "Matcha premium Uji asli Jepang dengan creamy milky aroma wangi.",
+        price: 16000,
+        badge: "Stok Terbatas",
+        badgeColor: "bg-emerald-600",
+        images: [
+          "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1514517554054-4de35f29910d?auto=format&fit=crop&w=600&q=80"
+        ]
+      },
+      {
+        id: 99,
+        name: "Mystery Box Blind Puding Botol",
+        category: "Kejutan Rasa",
+        desc: "Puding botol kejutan pilihan chef dengan harga spesial misterius!",
+        price: 13000,
+        badge: "Spesial Mystery",
+        badgeColor: "bg-purple-600",
+        images: [
+          "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+          "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+        ]
+      }
+    ];
+
+    const initialProductReviews = {
+      1: [
+        { 
+          id: 101, 
+          author: "Kak Dinda", 
+          rating: 5, 
+          date: "Hari ini", 
+          comment: "Cokelatnya lumer di mulut dan botolnya higienis banget!", 
+          photo: "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=300&q=80" 
+        }
+      ]
+    };
+
+    let products = JSON.parse(localStorage.getItem('milkypudding_products')) || initialProducts;
+    let productReviews = JSON.parse(localStorage.getItem('milkypudding_product_reviews')) || initialProductReviews;
+    let cart = JSON.parse(localStorage.getItem('milkypudding_cart')) || [];
+    let memberPoints = parseInt(localStorage.getItem('milkypudding_points')) || 0;
+    
+    let carouselIndices = {};
+    let cardTabs = {};
+    let appliedVoucher = null;
+
+    function formatRupiah(number) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastMessage');
+      document.getElementById('toastText').innerText = msg;
+      t.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+      t.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        t.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+        t.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    function saveLocalStorage() {
+      localStorage.setItem('milkypudding_products', JSON.stringify(products));
+      localStorage.setItem('milkypudding_product_reviews', JSON.stringify(productReviews));
+      localStorage.setItem('milkypudding_cart', JSON.stringify(cart));
+      localStorage.setItem('milkypudding_points', memberPoints);
+    }
+
+    function updateMemberTierUI() {
+      let tierName = "Bronze Member";
+      if (memberPoints >= 50) tierName = "Gold Member";
+      else if (memberPoints >= 20) tierName = "Silver Member";
+      document.getElementById('memberTierName').innerText = tierName;
+      document.getElementById('memberPointsCount').innerText = memberPoints;
+    }
+
+    function spinWheel() {
+      const box = document.getElementById('spinResultBox');
+      const btn = document.getElementById('spinButton');
+      btn.disabled = true;
+      box.innerText = "Memutar Roda Keberuntungan...";
+      
+      let count = 0;
+      const prizes = ["Diskon 10% (Gunakan: MILKYHEMAT)", "Gratis Ongkir (Zona 1)", "Diskon 15% Spesial", "Bonus Vla Ekstra"];
+      
+      const interval = setInterval(() => {
+        box.innerText = prizes[Math.floor(Math.random() * prizes.length)];
+        count++;
+        if (count > 10) {
+          clearInterval(interval);
+          const won = "Diskon 10% (Gunakan: MILKYHEMAT)";
+          box.innerText = `🎉 Selamat! Anda Menang: ${won}`;
+          appliedVoucher = { code: "MILKYHEMAT", discountPercent: 10 };
+          document.getElementById('voucherInput').value = "MILKYHEMAT";
+          applyVoucher();
+          btn.disabled = false;
+          showToast("Voucher berhasil diklaim ke keranjang!");
+        }
+      }, 100);
+    }
+
+    function addBundleToCart(bundleName, bundlePrice) {
+      const ex = cart.find(c => c.name === bundleName);
+      if (ex) ex.qty += 1;
+      else cart.push({ id: Date.now(), name: bundleName, price: bundlePrice, image: "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=200&q=80", qty: 1 });
+      saveLocalStorage();
+      renderProducts();
+      updateCartUI();
+      showToast(`${bundleName} ditambahkan ke keranjang!`);
+    }
+
+    function slidePhoto(productId, direction) {
+      const prod = products.find(p => p.id === productId);
+      if (!prod || !prod.images) return;
+      let curr = carouselIndices[productId] || 0;
+      curr += direction;
+      if (curr < 0) curr = prod.images.length - 1;
+      if (curr >= prod.images.length) curr = 0;
+      carouselIndices[productId] = curr;
+      renderProducts();
+    }
+
+    function setSlidePhoto(productId, idx) {
+      carouselIndices[productId] = idx;
+      renderProducts();
+    }
+
+    function switchCardTab(productId, tab) {
+      cardTabs[productId] = tab;
+      renderProducts();
+    }
+
+    function shareProductWhatsApp(productName, price) {
+      const text = `Hai! Yuk coba ${productName} dari MilkyPudding. Rasanya super lembut dan segar di botol, cuma ${formatRupiah(price)}! Pesan yuk di MilkyPudding.`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function renderProducts(list = products) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-16 text-center text-stone-400">Menu tidak ditemukan.</div>`;
+        return;
+      }
+
+      list.forEach(prod => {
+        const cartItem = cart.find(c => c.id === prod.id);
+        const qty = cartItem ? cartItem.qty : 0;
+        if (!prod.images) prod.images = [prod.image || "https://placehold.co/600x600"];
+        const activeIdx = carouselIndices[prod.id] || 0;
+        const currentImg = prod.images[activeIdx] || prod.images[0];
+        const activeTab = cardTabs[prod.id] || 'info';
+        const reviews = productReviews[prod.id] || [];
+        const avg = reviews.length > 0 ? (reviews.reduce((a,b)=>a+b.rating,0)/reviews.length).toFixed(1) : "5.0";
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group";
+
+        let bodyHTML = '';
+        if (activeTab === 'info') {
+          bodyHTML = `
+            <div>
+              <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-stone-100 mb-3 shadow-inner">
+                <img src="${currentImg}" alt="${prod.name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600?text=Pudding'"/>
+                <span class="absolute top-3 left-3 ${prod.badgeColor || 'bg-orange-500'} text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md z-10">${prod.badge || 'Favorit'}</span>
+                
+                <button onclick="slidePhoto(${prod.id}, -1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 p-1.5 rounded-full shadow"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <button onclick="slidePhoto(${prod.id}, 1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 p-1.5 rounded-full shadow"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+
+                <div class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10">
+                  ${prod.images.map((img, i) => `<button onclick="setSlidePhoto(${prod.id}, ${i})" class="w-2 h-2 rounded-full ${activeIdx === i ? 'bg-orange-500 w-5' : 'bg-white/70'}"></button>`).join('')}
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-orange-500">${prod.category}</span>
+                  <div class="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-lg text-xs font-bold text-amber-700">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-500 text-amber-500"></i>
+                    <span>${avg} (${reviews.length})</span>
+                  </div>
+                </div>
+                <h3 class="font-bold text-lg text-stone-900">${prod.name}</h3>
+                <p class="text-xs text-stone-500 line-clamp-2">${prod.desc}</p>
+                
+                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-100 text-[11px] text-stone-600 space-y-1 mt-2">
+                  <div class="flex justify-between font-bold">
+                    <span>Manis: 4/5 (Pas)</span>
+                    <span class="text-orange-600">Tekstur: Silky & Melty</span>
+                  </div>
+                  <p class="text-stone-400">Simpan di kulkas 2–4°C agar tetap segar.</p>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          bodyHTML = `
+            <div class="flex flex-col h-[280px]">
+              <div class="flex items-center justify-between pb-2 border-b border-stone-100 mb-2">
+                <span class="text-xs font-bold text-stone-700">Ulasan & Foto Pelanggan (${reviews.length})</span>
+                <button onclick="openReviewModal(${prod.id})" class="text-[11px] font-bold text-orange-600 bg-orange-100/70 hover:bg-orange-200 px-3 py-1 rounded-xl transition flex items-center gap-1">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tulis Ulasan & Foto
+                </button>
+              </div>
+              <div class="flex-1 overflow-y-auto space-y-2.5 pr-1">
+                ${reviews.length === 0 ? `<div class="text-center py-10 text-stone-400 text-xs">Belum ada ulasan publik. Jadilah yang pertama memberikan penilaian!</div>` : reviews.map(r => `
+                  <div class="bg-stone-50 p-3 rounded-xl border border-stone-100 text-xs space-y-1.5">
+                    <div class="flex justify-between font-bold text-stone-900">
+                      <span>${r.author}</span>
+                      <span class="text-amber-500">⭐ ${r.rating}/5</span>
+                    </div>
+                    <p class="text-stone-600 leading-relaxed">${r.comment}</p>
+                    ${r.photo ? `<img src="${r.photo}" class="w-20 h-20 object-cover rounded-lg border mt-1" onerror="this.style.display='none'">` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1 rounded-xl mb-3">
+              <button onclick="switchCardTab(${prod.id}, 'info')" class="py-1.5 text-xs font-bold rounded-lg ${activeTab === 'info' ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500'}">Info Produk</button>
+              <button onclick="switchCardTab(${prod.id}, 'reviews')" class="py-1.5 text-xs font-bold rounded-lg ${activeTab === 'reviews' ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500'}">Ulasan (${reviews.length})</button>
+            </div>
+            ${bodyHTML}
+          </div>
+          <div class="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-stone-400 font-semibold block">Harga per Botol</span>
+              <span class="text-lg font-black text-stone-900">${formatRupiah(prod.price)}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="shareProductWhatsApp('${prod.name}', ${prod.price})" class="p-2.5 text-stone-400 hover:text-emerald-600 bg-stone-100 rounded-2xl transition" title="Bagikan ke WhatsApp">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+              </button>
+              ${qty > 0 ? `
+                <div class="flex items-center bg-stone-100 rounded-2xl p-1 border border-stone-200">
+                  <button onclick="decrementProduct(${prod.id})" class="w-8 h-8 rounded-xl bg-white text-stone-700 flex items-center justify-center font-bold shadow-sm">-</button>
+                  <span class="w-8 text-center text-xs font-bold">${qty}</span>
+                  <button onclick="incrementProduct(${prod.id})" class="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-bold">+</button>
+                </div>
+              ` : `
+                <button onclick="addToCart(${prod.id})" class="px-4 py-2.5 rounded-2xl bg-orange-500 text-white text-xs font-bold shadow-md shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-1.5">
+                  <i data-lucide="plus" class="w-4 h-4"></i> Beli
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function filterProducts() {
+      const q = document.getElementById('searchProductInput').value.toLowerCase().trim();
+      renderProducts(products.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)));
+    }
+
+    function addToCart(id) {
+      const item = products.find(p => p.id === id);
+      if (!item) return;
+      const ex = cart.find(c => c.id === id);
+      if (ex) ex.qty += 1;
+      else cart.push({ id: item.id, name: item.name, price: item.price, image: item.images[0], qty: 1 });
+      saveLocalStorage();
+      renderProducts();
+      updateCartUI();
+      showToast(`${item.name} dimasukkan ke keranjang`);
+    }
+
+    function incrementProduct(id) {
+      const c = cart.find(x => x.id === id);
+      if (c) { c.qty += 1; saveLocalStorage(); renderProducts(); updateCartUI(); }
+    }
+
+    function decrementProduct(id) {
+      const idx = cart.findIndex(x => x.id === id);
+      if (idx > -1) {
+        if (cart[idx].qty > 1) cart[idx].qty -= 1;
+        else cart.splice(idx, 1);
+        saveLocalStorage(); renderProducts(); updateCartUI();
+      }
+    }
+
+    function removeProductFromCart(id) {
+      cart = cart.filter(x => x.id !== id);
+      saveLocalStorage(); renderProducts(); updateCartUI();
+    }
+
+    function applyVoucher() {
+      const code = document.getElementById('voucherInput').value.trim().toUpperCase();
+      const st = document.getElementById('voucherStatusText');
+      if (code === "MILKYHEMAT") {
+        appliedVoucher = { code: "MILKYHEMAT", discountPercent: 10 };
+        st.innerText = "Voucher aktif! Diskon 10%";
+        st.classList.remove('hidden');
+        showToast("Voucher aktif!");
+      } else {
+        appliedVoucher = null;
+        st.classList.add('hidden');
+        showToast("Voucher tidak valid!");
+      }
+      updateCartUI();
+    }
+
+    function toggleGiftBoxForm() {
+      const f = document.getElementById('giftBoxFields');
+      if (document.getElementById('giftBoxToggle').checked) f.classList.remove('hidden');
+      else f.classList.add('hidden');
+    }
+
+    function updateCartUI() {
+      const totalBottles = cart.reduce((s, i) => s + i.qty, 0);
+      const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+      document.getElementById('navCartCount').innerText = totalBottles;
+      document.getElementById('cartTotalItemsCount').innerText = totalBottles;
+      document.getElementById('subTotalPriceText').innerText = formatRupiah(subtotal);
+
+      let upsellTotal = 0;
+      if (document.getElementById('upsellVla').checked) upsellTotal += 3000;
+      const upsellRow = document.getElementById('upsellRow');
+      if (upsellTotal > 0) {
+        upsellRow.classList.remove('hidden');
+        document.getElementById('upsellPriceText').innerText = formatRupiah(upsellTotal);
+      } else {
+        upsellRow.classList.add('hidden');
+      }
+
+      const shippingFee = parseInt(document.getElementById('shippingAreaSelect').value) || 0;
+      document.getElementById('shippingPriceText').innerText = shippingFee === 0 ? "Gratis" : formatRupiah(shippingFee);
+
+      let discount = appliedVoucher ? (subtotal * appliedVoucher.discountPercent) / 100 : 0;
+      const subOpt = document.getElementById('subscriptionOption').value;
+      if (subOpt === 'weekly2x') {
+        discount += (subtotal * 5) / 100;
+      }
+
+      const discountRow = document.getElementById('discountRow');
+      if (discount > 0) {
+        discountRow.classList.remove('hidden');
+        document.getElementById('discountPriceText').innerText = `- ${formatRupiah(discount)}`;
+      } else {
+        discountRow.classList.add('hidden');
+      }
+
+      const grandTotal = Math.max(0, subtotal + upsellTotal + shippingFee - discount);
+      document.getElementById('cartTotalPrice').innerText = formatRupiah(grandTotal);
+
+      const container = document.getElementById('cartItemsContainer');
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="py-16 text-center text-stone-400 text-xs font-bold">Keranjang kosong.</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      cart.forEach(item => {
+        const el = document.createElement('div');
+        el.className = "flex items-center gap-3 bg-stone-50 p-3 rounded-2xl border border-stone-200";
+        el.innerHTML = `
+          <img src="${item.image}" class="w-12 h-12 object-cover rounded-xl border bg-white">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-stone-900 text-xs truncate">${item.name}</h4>
+            <span class="text-xs text-stone-500">${formatRupiah(item.price)}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold">×${item.qty}</span>
+            <button onclick="removeProductFromCart('${item.name}')" class="text-stone-400 hover:text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `;
+        container.appendChild(el);
+      });
+      lucide.createIcons();
+    }
+
+    function toggleCartModal(open) {
+      const modal = document.getElementById('cartModal');
+      const content = document.getElementById('cartContent');
+      if (open) {
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+        modal.classList.add('opacity-100');
+        content.classList.remove('translate-x-full');
+      } else {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+        content.classList.add('translate-x-full');
+      }
+    }
+
+    function sendOrderToWhatsApp() {
+      if (cart.length === 0) { showToast("Pilih minimal satu produk"); return; }
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      if (!name || !phone) { showToast("Nama dan nomor WhatsApp wajib diisi!"); return; }
+
+      memberPoints += 10;
+      updateMemberTierUI();
+      saveLocalStorage();
+
+      let orderText = "";
+      let subtotal = 0;
+      cart.forEach((i, idx) => {
+        subtotal += (i.price * i.qty);
+        orderText += `${idx+1}. *${i.qty}×* ${i.name}\n`;
+      });
+
+      const message = `Halo Admin MilkyPudding, saya ingin pesan:\n\n${orderText}\n👤 Nama: ${name}\n📱 WA: ${phone}\n💳 Pembayaran: ${document.getElementById('custPaymentMethod').value}\n⏰ Sesi: ${document.getElementById('custTimeSlot').value}\nCatatan: ${document.getElementById('custNotes').value}`;
+      window.open(`https://wa.me/6285704843430?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function openAdminAuthModal() { document.getElementById('adminAuthModal').classList.remove('hidden'); }
+    function closeAdminAuthModal() { document.getElementById('adminAuthModal').classList.add('hidden'); }
+    function verifyAdminPassword() {
+      if (document.getElementById('adminPasswordInput').value === "admin123") {
+        closeAdminAuthModal();
+        openAdminDashboard();
+        showToast("Login admin berhasil!");
+      } else {
+        showToast("Password salah!");
+      }
+    }
+
+    function openAdminDashboard() {
+      renderAdminProductList();
+      document.getElementById('adminDashboardModal').classList.remove('hidden');
+    }
+    function closeAdminDashboardModal() { document.getElementById('adminDashboardModal').classList.add('hidden'); }
+
+    function renderAdminProductList() {
+      const c = document.getElementById('adminProductListContainer');
+      document.getElementById('adminProductCount').innerText = products.length;
+      c.innerHTML = '';
+      products.forEach(p => {
+        const d = document.createElement('div');
+        d.className = "flex items-center justify-between bg-stone-50 p-3 rounded-xl border";
+        d.innerHTML = `
+          <div class="flex items-center gap-3">
+            <img src="${p.images[0]}" class="w-10 h-10 object-cover rounded-lg border">
+            <div>
+              <h5 class="font-bold text-xs text-stone-800">${p.name}</h5>
+              <span class="text-[11px] text-stone-500">${formatRupiah(p.price)} &bull; ${p.category}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openProductFormModal('edit', ${p.id})" class="px-3 py-1.5 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold">Edit</button>
+            <button onclick="deleteProduct(${p.id})" class="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold">Hapus</button>
+          </div>
+        `;
+        c.appendChild(d);
+      });
+    }
+
+    function deleteProduct(id) {
+      products = products.filter(p => p.id !== id);
+      saveLocalStorage(); renderProducts(); renderAdminProductList();
+      showToast("Menu dihapus");
+    }
+
+    function openProductFormModal(mode, id = null) {
+      document.getElementById('productFormModal').classList.remove('hidden');
+      if (mode === 'edit' && id) {
+        document.getElementById('productFormTitle').innerText = "Edit Menu Produk";
+        const p = products.find(x => x.id === id);
+        if (p) {
+          document.getElementById('editProductId').value = p.id;
+          document.getElementById('formProdName').value = p.name;
+          document.getElementById('formProdCategory').value = p.category;
+          document.getElementById('formProdPrice').value = p.price;
+          document.getElementById('formProdBadge').value = p.badge || "";
+          document.getElementById('formProdDesc').value = p.desc;
+          document.getElementById('formProdImg1').value = p.images[0] || "";
+          document.getElementById('formProdImg2').value = p.images[1] || "";
+          document.getElementById('formProdImg3').value = p.images[2] || "";
+        }
+      } else {
+        document.getElementById('productFormTitle').innerText = "Tambah Menu Baru";
+        document.getElementById('productFormElement').reset();
+        document.getElementById('editProductId').value = "";
+      }
+    }
+
+    function closeProductFormModal() { document.getElementById('productFormModal').classList.add('hidden'); }
+
+    function saveProductForm(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editProductId').value;
+      const name = document.getElementById('formProdName').value;
+      const category = document.getElementById('formProdCategory').value;
+      const price = parseInt(document.getElementById('formProdPrice').value);
+      const badge = document.getElementById('formProdBadge').value || "Favorit";
+      const desc = document.getElementById('formProdDesc').value;
+      const img1 = document.getElementById('formProdImg1').value;
+      const img2 = document.getElementById('formProdImg2').value || "";
+      const img3 = document.getElementById('formProdImg3').value || "";
+
+      if (editId) {
+        const p = products.find(x => x.id == editId);
+        if (p) {
+          p.name = name;
+          p.category = category;
+          p.price = price;
+          p.badge = badge;
+          p.desc = desc;
+          p.images = [img1, img2, img3];
+        }
+        showToast("Menu berhasil diperbarui!");
+      } else {
+        const newP = {
+          id: Date.now(),
+          name,
+          category,
+          price,
+          badge,
+          badgeColor: "bg-orange-500",
+          desc,
+          images: [img1, img2, img3]
+        };
+        products.push(newP);
+        showToast("Menu baru ditambahkan!");
+      }
+
+      saveLocalStorage();
+      renderProducts();
+      renderAdminProductList();
+      closeProductFormModal();
+    }
+
+    function openReviewModal(id) {
+      document.getElementById('reviewProductId').value = id;
+      setRating(5);
+      document.getElementById('reviewModal').classList.remove('hidden');
+    }
+    function closeReviewModal() { document.getElementById('reviewModal').classList.add('hidden'); }
+    
+    function setRating(v) {
+      document.getElementById('reviewRatingInput').value = v;
+      const stars = document.querySelectorAll('#starContainer .star-item');
+      stars.forEach((s, idx) => {
+        if (idx < v) {
+          s.classList.add('text-amber-400', 'fill-amber-400');
+          s.classList.remove('text-stone-300', 'fill-transparent');
+        } else {
+          s.classList.remove('text-amber-400', 'fill-amber-400');
+          s.classList.add('text-stone-300', 'fill-transparent');
+        }
+      });
+      const labels = ["1 Bintang (Kurang)", "2 Bintang (Cukup)", "3 Bintang (Baik)", "4 Bintang (Puas)", "5 Bintang (Sangat Puas)"];
+      document.getElementById('ratingTextLabel').innerText = labels[v-1];
+    }
+
+    function submitProductReview(e) {
+      e.preventDefault();
+      const pid = parseInt(document.getElementById('reviewProductId').value);
+      const rev = {
+        id: Date.now(),
+        author: document.getElementById('reviewAuthor').value.trim(),
+        rating: parseInt(document.getElementById('reviewRatingInput').value),
+        date: "Hari ini",
+        comment: document.getElementById('reviewComment').value.trim(),
+        photo: document.getElementById('reviewPhotoUrl').value.trim() || null
+      };
+      if (!productReviews[pid]) productReviews[pid] = [];
+      productReviews[pid].unshift(rev);
+      saveLocalStorage();
+      renderProducts();
+      closeReviewModal();
+      showToast("Ulasan & foto berhasil dikirim!");
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('currentYear').innerText = new Date().getFullYear();
+      updateMemberTierUI();
+      renderProducts();
+      updateCartUI();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
